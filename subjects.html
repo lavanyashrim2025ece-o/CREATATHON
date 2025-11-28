@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CourseEnroll+ – Choose Subjects</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cascadia+Code&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    font-family: 'Cascadia Code', monospace;
+    background: url("https://png.pngtree.com/thumb_back/fh260/back_our/20190625/ourmid/pngtree-flat-summer-vacation-interest-class-background-image_255547.jpg") no-repeat center center fixed;
+    background-size: cover;
+    padding: 20px;
+    color: #fff; /* form text color */
+  }
+
+  h2.title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: black; /* title is black */
+    text-shadow: none; /* remove shadow for clarity */
+  }
+
+  .container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: rgba(0,0,0,0.6); /* semi-transparent for readability */
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .subjects-list label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .credits {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background: #007bff;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<h2 class="title">CourseEnroll+ – Choose Subjects</h2>
+
+<div class="container">
+  <form id="subjectForm">
+    <div class="subjects-list">
+      <label><span>TECHNICAL ENGLISH(3 cr)</span> <input type="checkbox" class="subject" data-credit="3"></label>
+      <label><span>CALCULUS FOR ENGINEERS(4 cr)</span> <input type="checkbox" class="subject" data-credit="4"></label>
+      <label><span>APPLICATION DESIGN AND DEVELOPMENT (3 cr)</span> <input type="checkbox" class="subject" data-credit="3"></label>
+      <label><span>PROBLEM SOLVING USING C PROGRAMMING (2 cr)</span> <input type="checkbox" class="subject" data-credit="3"></label>
+      <label><span>ENGINEERING CHEMISTRY (3 cr)</span> <input type="checkbox" class="subject" data-credit="2"></label>
+    </div>
+    <div class="credits">Total Credits: <span id="totalCredits">0</span></div>
+    <button type="submit">Submit Registration</button>
+  </form>
+</div>
+
+<script>
+const subjects = document.querySelectorAll('.subject');
+const totalCreditsSpan = document.getElementById('totalCredits');
+const form = document.getElementById('subjectForm');
+
+// Update total credits dynamically
+subjects.forEach(sub => {
+  sub.addEventListener('change', () => {
+    let total = 0;
+    subjects.forEach(s => { if(s.checked) total += Number(s.getAttribute('data-credit')); });
+    totalCreditsSpan.textContent = total;
+  });
+});
+
+// Handle form submission
+form.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const selectedSubjects = Array.from(subjects).filter(s => s.checked);
+  if(selectedSubjects.length === 0){
+    alert("Please select at least one subject.");
+    return;
+  }
+
+  const studentInfo = JSON.parse(localStorage.getItem('studentInfo') || '{}');
+  if(!studentInfo.name){
+    alert("Student info not found. Please fill the first page.");
+    window.location.href = "student.html";
+    return;
+  }
+
+  const totalCredits = totalCreditsSpan.textContent;
+
+  alert(`Registration successful!
+Student: ${studentInfo.name}
+Email: ${studentInfo.email}
+Semester: ${studentInfo.semester}
+Slot: ${studentInfo.slot}
+Total Credits: ${totalCredits}`);
+
+  localStorage.removeItem('studentInfo');
+  form.reset();
+  totalCreditsSpan.textContent = '0';
+});
+</script>
+
+</body>
+</html>

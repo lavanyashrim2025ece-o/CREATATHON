@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<h2 class="title">CourseEnroll+ – Course Registration</h2>
+<style>
+  .title {
+    text-align: center;  
+  }
+
+  body { font-family: Cascadia Code; background:#f4f4f4; 
+ background: url("https://img.pikbest.com/backgrounds/20190701/summer-training-course-enrollment-hd-background_1896928.jpg!sw800") no-repeat center center fixed;
+    background-size: cover;
+padding:20px;
+ }
+  .container { max-width:500px; margin:0 auto; background:#fff; padding:20px; border-radius:8px; }
+  .field { margin-bottom:15px; display:flex; flex-direction:column; }
+  label { font-weight:600; margin-bottom:4px; }
+  input, select { padding:6px; border:1px solid #ccc; border-radius:4px;}
+  button { padding:8px 16px; border:none; border-radius:4px; background:#007bff; color:#fff; cursor:pointer; }
+</style>
+</head>
+<body>
+
+  <form id="studentForm" class="container">
+    <div class="field">
+      <label for="name">Student Name</label>
+      <input type="text" id="name" required>
+    </div>
+    <div class="field">
+      <label for="email">Email ID</label>
+      <input type="email" id="email" required>
+    </div>
+    <div class="field">
+      <label for="semester">Semester</label>
+      <select id="semester" required>
+        <option value="">Select semester</option>
+        <option value="1">Semester 1</option>
+        <option value="2">Semester 2</option>
+        <option value="3">Semester 3</option>
+        <option value="4">Semester 4</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="slot">Preferred Slot</label>
+      <select id="slot" required>
+        <option value="">Select slot</option>
+        <option value="morning">Morning (9–12)</option>
+        <option value="afternoon">Afternoon (1–4)</option>
+        <option value="evening">Evening (5–8)</option>
+      </select>
+    </div>
+    <button type="submit">Next: Choose Subjects</button>
+  </form>
+
+<script>
+const form = document.getElementById('studentForm');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const semester = document.getElementById('semester').value;
+  const slot = document.getElementById('slot').value;
+
+  if(!name || !email || !semester || !slot){
+    alert("Please fill all fields.");
+    return;
+  }
+
+  // Save data to localStorage
+  localStorage.setItem('studentInfo', JSON.stringify({name, email, semester, slot}));
+
+  // Go to subjects page
+  window.location.href = "subjects.html";
+});
+</script>
+</body>
+</html>
